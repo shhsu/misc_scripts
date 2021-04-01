@@ -1,0 +1,13 @@
+#!/usr/bin/expect -f
+
+set ssh_host [lindex $argv 0];
+set ssh_user [lindex $argv 1];
+set ssh_pw_path [lindex $argv 2];
+set cmd [lindex $argv 3];
+set ssh_pw_file [open $ssh_pw_path r]
+gets $ssh_pw_file ssh_pw
+close $ssh_pw_file
+spawn ssh -o StrictHostKeyChecking=no $ssh_user@$ssh_host -x $cmd
+expect "assword"
+send "$ssh_pw\r"
+expect eof
